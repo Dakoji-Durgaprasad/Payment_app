@@ -1,1 +1,47 @@
+Requirements:-
+User can create account / can self register.(Phno, name, password, dob,address)
+User should login to the application to perform any designated task.
+User can add bank account (optional, multiple bank account)
+User can add money to wallet (limit of wallet amount)
+User can do a transaction (txn limit, source to destination)
+User can request for a statement. (txn statement, limit of txns request) 
+User can request for a refund ()
+Monthly statement generation.
+
+
+Rule -1: Creating a classes
+
+class PaymentAccount{
+	paymentAccountId;
+	currentWalletbalance;
+	
+}
+class User{
+	firstName;
+	secondName;
+	phoneNum;
+	dateOfBirth;
+	
+	user;
+	password;
+	
+}
+class BankAccount{
+	bankAccountId;
+	bankAccountIFSC;
+	bankAccountNumber;
+	bankAccountType;
+	bankAccountBankName;
+}
+class Transaction{
+	txnLimit;
+	txnId;
+	txnSource; // user to user, wallet to wallet , bank to bank
+	txnDestination; // user to user, wallet to wallet , bank to bank
+	txnStatement;
+} 
+enum Source{
+	user;
+	
+}
 
