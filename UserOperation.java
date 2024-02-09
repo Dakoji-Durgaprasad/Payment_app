@@ -9,7 +9,7 @@ public class UserOperation {
 		u.setPhoneNumber(PhoneNumber);
 		u.setAddress(Address);
 		u.setPassword(Password);
-		u.setUserId(1234);
+		u.setUserId((int)(math.random()*1000+100));
 		return u;
 	
 	}
