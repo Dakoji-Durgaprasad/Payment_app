@@ -1,60 +1,84 @@
+//package com.sat.tmf.paymentscli.entity;
 
-public class User  {
+import java.util.ArrayList;
+import java.util.List;
+
+public class User extends Object{
 	
-	private String FirstName;
-	private String LastName;
-	private String DateOfBirth;
-	private long PhoneNumber;
-	private String Address;
+	private String firstName;
+	private String lastName;
+	private long phoneNum;
+	private String dateOfBirth;
+	private String communicationAddr;
 	
-	private int UserId;
-	private String Password;
+	private int userId;
+	private String password;
 	
+	private List<BankAccount> baList = new ArrayList<BankAccount>();
+	
+//	private int paymentsAcctId;
+	private Wallet w;
+	
+	public List<BankAccount> getBaList() {
+		return baList;
+	}
+	public void setBaList(List<BankAccount> baList) {
+		this.baList = baList;
+	}
 	public String getFirstName() {
-		return FirstName;
+		return firstName;
 	}
 	public void setFirstName(String firstName) {
-		FirstName = firstName;
+		this.firstName = firstName;
 	}
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		this.lastName = lastName;
+	}
+	public long getPhoneNum() {
+		return phoneNum;
+	}
+	public void setPhoneNum(long phoneNum) {
+		this.phoneNum = phoneNum;
 	}
 	public String getDateOfBirth() {
-		return DateOfBirth;
+		return dateOfBirth;
 	}
 	public void setDateOfBirth(String dateOfBirth) {
-		DateOfBirth = dateOfBirth;
+		this.dateOfBirth = dateOfBirth;
 	}
-	public long getPhoneNumber() {
-		return PhoneNumber;
+	public String getCommunicationAddr() {
+		return communicationAddr;
 	}
-	public void setPhoneNumber(long phoneNumber) {
-		PhoneNumber = phoneNumber;
-	}
-	public String getAddress() {
-		return Address;
-	}
-	public void setAddress(String address) {
-		Address = address;
+	public void setCommunicationAddr(String communicationAddr) {
+		this.communicationAddr = communicationAddr;
 	}
 	public int getUserId() {
-		return UserId;
+		return userId;
 	}
 	public void setUserId(int userId) {
-		UserId = userId;
+		this.userId = userId;
 	}
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 	public void setPassword(String password) {
-		Password = password;
+		this.password = password;
 	}
-
+	
+//	Account[]
+//	BankAccount[]
+	@Override
 	public String toString() {
-		return this.UserId+" : "+this.FirstName+" : "+this.LastName+" : "+this.DateOfBirth+" : "+this.PhoneNumber+" : "+this.Address+"\n";
+		return this.userId+":"+ this.firstName +":"+ this.lastName + ":"+this.phoneNum+":"+this.dateOfBirth+":"+this.communicationAddr;
 	}
-		
+	
+	public String userToFileRecord() {
+		return this.userId+","+ this.firstName +","+ this.lastName + ","+this.phoneNum+","+this.dateOfBirth+","+this.communicationAddr+"\n";
+	}
+	
+	
+	
 }
