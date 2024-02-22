@@ -213,7 +213,7 @@ public class RunPaymentsApp {
 		
 		for(BankAccount  acct: bankAcctList) {
 			if(acct.getBankAcctNumber()==acNum) {
-				bankAcctList.remove(Integer.valueOf(acNum));
+				bankAcctList.remove(acNum);
 			}
 			else {
 				System.out.println(bankAcctList);
