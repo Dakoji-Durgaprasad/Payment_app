@@ -16,7 +16,7 @@ public class RunPaymentsApp {
 //	static int x=10;
 //	public static User[] usersList = new User[5];
 	public static List<User> usersList =new ArrayList<User>();
-	public static List<BankAccount> bankAcctList = new ArrayList<BankAccount>();
+	public static ArrayList<BankAccount> bankAcctList = new ArrayList<BankAccount>();
 	public static int currUserId = -1;
 
 	public static void main(String[] args) {
@@ -30,10 +30,11 @@ public class RunPaymentsApp {
 			System.out.println("1. Register New User");
 			System.out.println("2. Login");
 			System.out.println("3. ADD Bank Account");
-			System.out.println("4. List of Users");
-			System.out.println("5. Current User");
-			System.out.println("6. List All User Bank Accounts");
-			System.out.println("7. Delete Bank Account");
+			System.out.println("4. ADD Money To Wallet");
+			System.out.println("5. List of Users");
+			System.out.println("6. Current User");
+			System.out.println("7. List All User Bank Accounts");
+			System.out.println("8. Delete Bank Account");
 			System.out.println("-1. Quit/ Logout");
 			System.out.println("Choose an Option:");
 			
@@ -61,38 +62,85 @@ public class RunPaymentsApp {
 			
 			System.out.println("User selected "+selectedOption);
 			UserOperations ops = new UserOperations();
-			if(optStr.equalsIgnoreCase("1")) {
+//			if(optStr.equalsIgnoreCase("1")) {
+//				registerUser();
+//			}else if(optStr.equalsIgnoreCase("2")) {
+//				if(!loginUser()) {
+//					break;
+//				}
+//			}else if(optStr.equalsIgnoreCase("3")) {
+//				if(validateCurrentUser()) {
+//					addBankAccount();
+//				}
+//			}else if(optStr.equalsIgnoreCase("4")) {
+//				if(validateCurrentUser()) {
+//				AddMoneyToWallet();
+//				}
+//			}else if(optStr.equalsIgnoreCase("5")) {
+//				ops.printUserList(usersList);
+//			}else if(optStr.equalsIgnoreCase("6")) {
+//				if(currUserId != -1) {
+//					ops.printCurrUserDetails(currUserId);
+//				}
+//			}else if(optStr.equalsIgnoreCase("7")) {
+//				if(currUserId != -1) {
+//					printUserBAnkAcctsList();
+//				}
+//			}else if(optStr.equalsIgnoreCase("8")) {
+//				if(currUserId != -1) {
+//					delBankAccount();
+//				}
+//			}else if(optStr.equalsIgnoreCase("-1")) {
+//				break;
+//			}else {
+//				System.out.println("Enter a valid option.");
+//			}
+			switch(optStr) {
+			case "1":
 				registerUser();
-			}else if(optStr.equalsIgnoreCase("2")) {
+				break;
+			case "2":
 				if(!loginUser()) {
 					break;
 				}
-			}else if(optStr.equalsIgnoreCase("3")) {
+					break;
+			case "3":
 				if(validateCurrentUser()) {
 					addBankAccount();
 				}
-			}else if(optStr.equalsIgnoreCase("4")) {
+				break;
+			case "4":
+				if(validateCurrentUser()) {
+				AddMoneyToWallet();
+				}
+				break;
+			case "5":
 				ops.printUserList(usersList);
-			}else if(optStr.equalsIgnoreCase("5")) {
+				break;
+			case "6":
 				if(currUserId != -1) {
 					ops.printCurrUserDetails(currUserId);
 				}
-			}else if(optStr.equalsIgnoreCase("6")) {
+				break;
+			case "7":
 				if(currUserId != -1) {
 					printUserBAnkAcctsList();
 				}
-			}else if(optStr.equalsIgnoreCase("7")) {
+				break;
+			case "8":
 				if(currUserId != -1) {
 					delBankAccount();
 				}
-			}else if(optStr.equalsIgnoreCase("-1")) {
 				break;
-			}else {
-				
+			case "-1":
+				break;
+			default:
+				//System.out.println("Enter a valid option.");
 			}
 		}
 	}
 	
+
 	public static void registerUser() {
 		Scanner opt = new Scanner(System.in);
 		UserOperations ops = new UserOperations();
@@ -207,22 +255,44 @@ public class RunPaymentsApp {
 	
 	public static void delBankAccount() {
 		Scanner opt = new Scanner(System.in);
+		BankAccount b = new BankAccount();
+		
 		
 		System.out.println("Enter Bank Account Number: ");
 		String acNum = opt.next();
 		
-		for(BankAccount  acct: bankAcctList) {
-			if(acct.getBankAcctNumber()==acNum) {
-				bankAcctList.remove(acNum);
-			}
-			else {
-				System.out.println(bankAcctList);
-				System.out.println("the account is not linked with the user");
-			}
-			 
-		}
-		System.out.println("Account not found");
+		String AcctNumToDel = acNum;
+		removeUserBankAcct(AcctNumToDel);
 		
+		boolean accountFound = false;
+		for(int i=0;i<bankAcctList.size();i++) {
+			BankAccount banAcct = bankAcctList.get(i);
+			if(banAcct.getBankAcctNumber().equals(AcctNumToDel)) {
+				bankAcctList.remove(i);
+				accountFound= true;
+				System.out.println("User Bank account is deleted successfully");
+				break;
+			}
+			
+		}
+		if(!accountFound )
+		{
+			System.out.println("Account not found.");
+		}
+	}
+		
+     public static void removeUserBankAcct(String acctNumToDel) {
+		List<BankAccount> AcctToRemove = new ArrayList<>();
+		for(BankAccount Acct:bankAcctList) {
+			if(Acct.getBankAcctNumber().equals(acctNumToDel)) {
+				AcctToRemove.add(Acct);
+			}
+		}
+		bankAcctList.remove(AcctToRemove);
+	}
+
+
+	public static void AddMoneyToWallet() {
 		
 		
 	}
