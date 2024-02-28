@@ -5,9 +5,11 @@ import java.util.Map;
 public class UserOperations {
 	
 	public List<User> users=null;
+	public List<BankAccount> baAcctList=null;
 	
 	public UserOperations() {
 		users = RunPaymentsApp.userList;
+		baAcctList = RunPaymentsApp.baAcctList;
 	}
 	public User doUserRegistration(String fname,String lname,long phnum,String dob,String addr,String pswd) {
 		User u = new User();
@@ -65,4 +67,17 @@ public class UserOperations {
 		}
 		return userBankAcctMap;
 	}
+	
+	public boolean verifyUserBankAccount(String bankAcctNumber,String pin) {
+		for(int i=0;i<baAcctList.size();i++) {
+			if(String.valueOf(baAcctList.get(i).getBankAcctNumber()).equals(bankAcctNumber)) {
+				if(pin.equals(baAcctList.get(i).getBankAcctPin())) {
+					baAcctList.remove(i);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }
