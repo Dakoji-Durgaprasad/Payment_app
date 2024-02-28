@@ -1,4 +1,6 @@
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserOperations {
 	
@@ -13,7 +15,7 @@ public class UserOperations {
 		u.setLastName(lname);
 		u.setPhoneNumber(phnum);
 		u.setDateofBirth(dob);
-		u.setAddressd(addr);
+		u.setAddress(addr);
 		u.setPassword(pswd);
 		
 		u.setUserId((int)(Math.random()*1000)+100); 
@@ -50,5 +52,17 @@ public class UserOperations {
 				System.out.println("No user logged in");
 			}
 		}
+	}
+	
+	public Map<User,List<BankAccount>> getUsersBankAccount(){
+		
+		Map<User,List<BankAccount>> userBankAcctMap = new HashMap<User,List<BankAccount>>();
+		
+		for(User u :users) {
+			if(users!=null) {
+				userBankAcctMap.put(u,u.getBaList());
+			}
+		}
+		return userBankAcctMap;
 	}
 }
