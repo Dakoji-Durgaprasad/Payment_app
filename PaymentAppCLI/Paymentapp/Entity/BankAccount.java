@@ -7,7 +7,7 @@ public class BankAccount {
 	AcctType bankAcctType;
 	String bankAcctPin;
 	
-	int UserId;
+	private int UserId;
 	
 	public int getUserId() {
 		return UserId;
