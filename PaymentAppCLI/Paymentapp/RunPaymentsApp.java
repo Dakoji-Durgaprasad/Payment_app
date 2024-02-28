@@ -19,7 +19,7 @@ public class RunPaymentsApp {
 			System.out.println("1.Registration");
 			System.out.println("2.Login");
 			System.out.println("3.Add bank account");
-			System.out.println("4.Add money to wallet");
+			System.out.println("4.Wallet");
 			System.out.println("5.List of users");
 			System.out.println("6.Current user");
 			System.out.println("7.List of users bank accounts");
@@ -47,35 +47,50 @@ public class RunPaymentsApp {
 			if (op.equalsIgnoreCase("1")) {
 				System.out.println("User selected registartion");
 				Registration();
-			} else if (op.equalsIgnoreCase("2")) {
+			} 
+			else if (op.equalsIgnoreCase("2")) {
 				System.out.println("Login");
 				Login();
-			} else if (op.equalsIgnoreCase("3")) {
+			} 
+			else if (op.equalsIgnoreCase("3")) {
 				if (validateCurrUser()) {
 					System.out.println("Please Enter bank account details: ");
 					AddBankAccount();
 				}
-			} else if (op.equalsIgnoreCase("4")) {
-				System.out.println("Add money to wallet");
-			} else if (op.equalsIgnoreCase("5")) {
+			} 
+			else if (op.equalsIgnoreCase("4")) {
+				if(validateCurrUser()) {
+					System.out.println("Wallet");
+					WalletOperation();
+				}
+			} 
+			else if (op.equalsIgnoreCase("5")) {
 				System.out.println("List of users");
 				uop.printUsersList(userList);
-			} else if (op.equalsIgnoreCase("6")) {
+			} 
+			else if (op.equalsIgnoreCase("6")) {
 				if (currUserId != -1) {
 					System.out.println("Current users");
 					uop.printCurrUserDetails(currUserId);
 				}
-			} else if (op.equalsIgnoreCase("7")) {
+			}
+			else if (op.equalsIgnoreCase("7")) {
 				if(currUserId!=-1) {
 					System.out.println("List of users bank accounts");
 					printUserBankAccounts();
 				}
-			} else if (op.equalsIgnoreCase("8")) {
-				System.out.println("Delete bank account");
-			} else if (op.equalsIgnoreCase("-1")) {
+			}
+			else if (op.equalsIgnoreCase("8")) {
+				if(validateCurrUser()) {
+					System.out.println("Delete bank account");
+					deleteUserBankAccount();
+				}
+			} 
+			else if (op.equalsIgnoreCase("-1")) {
 				System.out.println("Exit");
 				break;
-			} else {
+			} 
+			else {
 				System.out.println("Enter a valid Option!!! \n");
 
 			}
@@ -208,4 +223,116 @@ public class RunPaymentsApp {
 		}
 	}
 	
+	public static void deleteUserBankAccount() {
+		Scanner sc = new Scanner(System.in);
+		UserOperations uop = new UserOperations();
+		
+		System.out.println("Enter your bank account number: ");
+		String banAcctnum = sc.next();
+		
+		System.out.println("Enter your bank account pin: ");
+		String actPin = sc.next();
+		
+//		if (uop.verifyUserBankAccount(banAcctnum, actPin)) {
+//			return true;
+//		} else {
+//			System.out.println("Enter valid Bank account and pin to delete account!!");
+//			return false;
+//		}
+		int UserIdToDelete = currUserId;
+		removeUserBankAcct(UserIdToDelete);
+		
+		boolean accountFound = false;
+		for(int i=0;i<userList.size();i++) {
+			User user = userList.get(i);
+			if(user.getUserId()==(UserIdToDelete)) {
+				baAcctList.remove(i);
+				currUserId=-1;
+				accountFound= true;
+				System.out.println("User Bank account is deleted successfully");
+				break;
+			}
+			
+		}
+		if(!accountFound )
+		{
+			System.out.println("Account not found.");
+		}
+	}	
+	
+     public static void removeUserBankAcct(int UserIdToDelete) {
+		List<BankAccount> acctToRemove = new ArrayList<>();
+		for(BankAccount Acct:baAcctList) {
+			if(Acct.getUserId()==(UserIdToDelete)) {
+				acctToRemove.add(Acct);
+			}
+		}
+		baAcctList.removeAll(acctToRemove);
+	}
+	
+     public static void WalletOperation(){
+    	 
+    	Scanner sc = new Scanner(System.in);	 		
+	 	UserOperations uop = new UserOperations();
+		int Balance = 2000;
+		int Deposit = 0;
+		int Withdraw = 0;
+		int password=1234;
+		int pin=0;
+		
+		while(true) { 
+		System.out.println("Please choose an option: ");
+		
+		System.out.println("1.Check Balance ");
+		System.out.println("2.Deposit");
+		System.out.println("3.Withdraw");
+		System.out.println("4.Transaction History");
+		System.out.println("5.EXIT \n");
+
+		System.out.println("Enter your option :");
+		
+		int opt= sc.nextInt();
+		
+		switch(opt){
+		case 1:
+			System.out.println("Your current Balance is : "+Balance +"\n");
+			break;
+		
+		case 2:
+			System.out.println("Enter an amount to Deposit: ");
+			Deposit = sc.nextInt();
+			Balance = Deposit + Balance;
+			System.out.println("Your current Balance is : "+Balance);
+			break;
+		
+		case 3:
+			System.out.println("Enter an amount to Withdraw: ");
+			Withdraw = sc.nextInt();
+			if(Balance > Withdraw) {
+				Balance = Balance - Withdraw;
+				System.out.println("Your current Balance is : "+Balance);
+			}
+			else {
+				System.out.println("Your current balance is Unable to Withdraw!");
+			}
+			break;
+			
+		case 4:
+			System.out.println("Your last transactioin history : ");
+			System.out.println("Last time added desposited amount : "+Deposit);
+			System.out.println("Last time taken withdrawal amount : "+Withdraw);
+			System.out.println("Your current available Balance is : "+Balance +"\n");
+			break;
+		case 5:
+			System.out.println("Thanks for Visiting!! \n");
+			break;
+			
+		default:
+			System.out.println("Enter valid Option!!");
+		}
+		if(opt==5) {
+			break;
+		}
+		}
+     }
 }
