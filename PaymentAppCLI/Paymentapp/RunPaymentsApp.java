@@ -1,17 +1,19 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class RunPaymentsApp {
-	
+
 	public static List<User> userList = new ArrayList<User>();
-	public static int currUserId=-1;
+	public static int currUserId = -1;
+	public static List<BankAccount> baAcctList = new ArrayList<BankAccount>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 		int SelectedOption = 0;
-		
+
 		while (true) {
 			System.out.println("Please choose an option from below: ");
 			System.out.println("1.Registration");
@@ -39,33 +41,35 @@ public class RunPaymentsApp {
 			} finally {
 				System.out.println();
 			}
-			
+
 			UserOperations uop = new UserOperations();
-			
+
 			if (op.equalsIgnoreCase("1")) {
 				System.out.println("User selected registartion");
 				Registration();
-			} 
-			else if (op.equalsIgnoreCase("2")) {
+			} else if (op.equalsIgnoreCase("2")) {
 				System.out.println("Login");
 				Login();
-			} 
-			else if (op.equalsIgnoreCase("3")) {
-				System.out.println("Add bank account");
+			} else if (op.equalsIgnoreCase("3")) {
+				if (validateCurrUser()) {
+					System.out.println("Please Enter bank account details: ");
+					AddBankAccount();
+				}
 			} else if (op.equalsIgnoreCase("4")) {
 				System.out.println("Add money to wallet");
 			} else if (op.equalsIgnoreCase("5")) {
 				System.out.println("List of users");
 				uop.printUsersList(userList);
-			} 
-			else if (op.equalsIgnoreCase("6")) {
-				System.out.println("Current users");
-				if(currUserId!=-1) {
-				uop.printCurrUserDetails(currUserId);
+			} else if (op.equalsIgnoreCase("6")) {
+				if (currUserId != -1) {
+					System.out.println("Current users");
+					uop.printCurrUserDetails(currUserId);
 				}
-			} 
-			else if (op.equalsIgnoreCase("7")) {
-				System.out.println("List of users bank accounts");
+			} else if (op.equalsIgnoreCase("7")) {
+				if(currUserId!=-1) {
+					System.out.println("List of users bank accounts");
+					printUserBankAccounts();
+				}
 			} else if (op.equalsIgnoreCase("8")) {
 				System.out.println("Delete bank account");
 			} else if (op.equalsIgnoreCase("-1")) {
@@ -77,28 +81,28 @@ public class RunPaymentsApp {
 			}
 		}
 	}
-	
+
 	public static void Registration() {
 		Scanner sc = new Scanner(System.in);
 		UserOperations uop = new UserOperations();
 		System.out.println("First Name: ");
-		String fname=sc.next();
+		String fname = sc.next();
 		System.out.println("Last Name: ");
-		String lname=sc.next();
+		String lname = sc.next();
 		System.out.println("Phone Number: ");
-		long phnum=sc.nextLong();
+		long phnum = sc.nextLong();
 		System.out.println("Date of Birth: ");
-		String dob=sc.next();
+		String dob = sc.next();
 		System.out.println("Address: ");
-		String addr=sc.next();
+		String addr = sc.next();
 		System.out.println("Password: ");
-		String pswd=sc.next();
-		
+		String pswd = sc.next();
+
 		User u;
 		try {
-		u= uop.doUserRegistration(fname, lname, phnum, dob, addr,pswd);
-		userList.add(u);
-		}catch(Exception e) {
+			u = uop.doUserRegistration(fname, lname, phnum, dob, addr, pswd);
+			userList.add(u);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -106,27 +110,102 @@ public class RunPaymentsApp {
 	public static boolean Login() {
 		Scanner sc = new Scanner(System.in);
 		UserOperations uop = new UserOperations();
-		
+
 		System.out.println("Enter Your User ID: ");
 		String uId = sc.next();
 		System.out.println("Enter Your Password: ");
 		String pswd = sc.next();
-		
-		if(uop.verifyUserLogin(uId, pswd)) {
-			currUserId =Integer.parseInt(uId);
+
+		if (uop.verifyUserLogin(uId, pswd)) {
+			currUserId = Integer.parseInt(uId);
 			return true;
-		}else {
+		} else {
 			System.out.println("Login Failed, please try again!!");
 			return false;
 		}
-		
+
 	}
-	
+
 	public static boolean validateCurrUser() {
-		if(currUserId!=-1) {
+		if (currUserId != -1) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
+
+	public static void AddBankAccount() {
+		AcctType selectedAcctType=null;
+		Scanner sc = new Scanner(System.in);
+		UserOperations uop = new UserOperations();
+
+		System.out.println("Bank Account Number: ");
+		String baAcctNum = sc.next();
+		System.out.println("Bank IFSC Code: ");
+		String baIFSCCode = sc.next();
+		System.out.println("Bank Name: ");
+		String baName = sc.next();
+		System.out.println("Bank Account Type: ");
+		System.out.println("SA: SAVINGS");
+		System.out.println("CA: CURRENT");
+		System.out.println("LA: LOAN");
+		System.out.println("SL: SALARY");
+		String baAcctType = sc.next();
+		
+		if( baAcctType.equalsIgnoreCase("SA")) {
+			//System.out.println(AcctType.SAVINGS);
+			selectedAcctType=AcctType.SAVINGS;
+			
+		}
+		else if(baAcctType.equalsIgnoreCase("CA")){
+			//System.out.println(AcctType.CURRENT);
+			selectedAcctType=AcctType.SAVINGS;
+		}
+		else if(baAcctType.equalsIgnoreCase("LA")) {
+			//System.out.println(AcctType.LOAN);
+			selectedAcctType=AcctType.LOAN;
+		}
+		else if (baAcctType.equalsIgnoreCase("SL")) {
+			//System.out.println(AcctType.SALARY);
+			selectedAcctType=AcctType.SALARY;
+		}
+		else {
+			System.out.println("Enter Valid Account Type Option");
+		}
+		
+		System.out.println("Bank Account Pin: ");
+		String baAcctPin = sc.next();
+		
+		BankAccount ba = new BankAccount();
+		ba.setBankAcctNumber(baAcctNum);
+		ba.setBankAcctIFSC(baIFSCCode);
+		ba.setBankAcctBankName(baName);
+		ba.setBankAcctType(selectedAcctType);
+		ba.setBankAcctPin(baAcctPin);
+		ba.setUserId(currUserId);
+		
+		for(User u : userList) {
+			if(u.getUserId()==currUserId) {
+				u.getBaList().add(ba);
+			}
+		}
+		baAcctList.add(ba);
+	}
+	
+	public static void printUserBankAccounts() {
+		UserOperations uop = new UserOperations();
+		Map<User,List<BankAccount>> mapItems = uop.getUsersBankAccount();
+		
+		for(User u:mapItems.keySet()) {
+			List<BankAccount> baList = mapItems.get(u);
+			System.out.println(u);
+			if(baList!=null) {
+				for(BankAccount ba:baList) {
+					System.out.println("--"+ba.printBankAcctDetails());
+				}
+			}
+			
+		}
+	}
+	
 }
