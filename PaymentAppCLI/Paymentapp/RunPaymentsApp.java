@@ -174,7 +174,7 @@ public class RunPaymentsApp {
 		}
 		else if(baAcctType.equalsIgnoreCase("CA")){
 			//System.out.println(AcctType.CURRENT);
-			selectedAcctType=AcctType.SAVINGS;
+			selectedAcctType=AcctType.CURRENT;
 		}
 		else if(baAcctType.equalsIgnoreCase("LA")) {
 			//System.out.println(AcctType.LOAN);
