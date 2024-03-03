@@ -274,10 +274,10 @@ public class RunPaymentsApp {
     	 
     	Scanner sc = new Scanner(System.in);	 		
 	 	UserOperations uop = new UserOperations();
-		int Balance = 2000;
+		int Balance = 0;
 		int Deposit = 0;
 		int Withdraw = 0;
-		int password=1234;
+	     // int password=1234;
 		int pin=0;
 		
 		while(true) { 
@@ -324,7 +324,7 @@ public class RunPaymentsApp {
 			System.out.println("Your current available Balance is : "+Balance +"\n");
 			break;
 		case 5:
-			System.out.println("Thanks for Visiting!! \n");
+			System.out.println("Thanks You!! \n");
 			break;
 			
 		default:
