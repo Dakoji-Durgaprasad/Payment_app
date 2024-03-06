@@ -6,6 +6,7 @@ public class Transaction {
 	private String Limit;
 	private String txnSource;
 	private String txnDestination;
+	private double amount;
 	private String statement;
 	
 	
@@ -38,6 +39,12 @@ public class Transaction {
 	}
 	public void setTxnDestination(String txnDestination) {
 		this.txnDestination = txnDestination;
+	}
+	public double getAmount() {
+		return amount;
+	}
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 	public String getStatement() {
 		return statement;
