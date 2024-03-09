@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -81,9 +82,13 @@ public class RunPaymentsApp {
 				}
 			}
 			else if (op.equalsIgnoreCase("8")) {
-				if(validateCurrUser()) {
+				if(currUserId!=-1) {
 					System.out.println("Delete bank account");
-					deleteUserBankAccount();
+					System.out.println("Enter Bank Account Number: ");
+					String accNum=sc.next();
+					deleteUserBankAccount(currUserId, accNum, userList);
+				}else {
+					System.out.println("please login to delete bank accounts");
 				}
 			} 
 			else if (op.equalsIgnoreCase("-1")) {
@@ -223,54 +228,26 @@ public class RunPaymentsApp {
 		}
 	}
 	
-	public static void deleteUserBankAccount() {
-		Scanner sc = new Scanner(System.in);
-		UserOperations uop = new UserOperations();
-		
-		System.out.println("Enter your bank account number: ");
-		String banAcctnum = sc.next();
-		
-		System.out.println("Enter your bank account pin: ");
-		String actPin = sc.next();
-		
-//		if (uop.verifyUserBankAccount(banAcctnum, actPin)) {
-//			return true;
-//		} else {
-//			System.out.println("Enter valid Bank account and pin to delete account!!");
-//			return false;
-//		}
-		int UserIdToDelete = currUserId;
-		removeUserBankAcct(UserIdToDelete);
-		
-		boolean accountFound = false;
-		for(int i=0;i<userList.size();i++) {
-			User user = userList.get(i);
-			if(user.getUserId()==(UserIdToDelete)) {
-				baAcctList.remove(i);
-				currUserId=-1;
-				accountFound= true;
-				System.out.println("User Bank account is deleted successfully");
-				break;
-			}
-			
-		}
-		if(!accountFound )
-		{
-			System.out.println("Account not found.");
-		}
-	}	
-	
-     public static void removeUserBankAcct(int UserIdToDelete) {
-		List<BankAccount> acctToRemove = new ArrayList<>();
-		for(BankAccount Acct:baAcctList) {
-			if(Acct.getUserId()==(UserIdToDelete)) {
-				acctToRemove.add(Acct);
+
+	public static void deleteUserBankAccount(int UserId, String accNum,List<User> userlist) {
+		for(User u: userlist) {
+			if(u.getUserId()==UserId) {
+				List<BankAccount> baAcctList = u.getBaList();
+				Iterator<BankAccount> iterator = baAcctList.iterator();
+				while(iterator.hasNext()) {
+					BankAccount acct = iterator.next();
+					if(acct.getBankAcctNumber().equals(accNum)) {
+						iterator.remove();
+						System.out.println("BankAccount deleted successfully");
+						return;
+					}
+				}
 			}
 		}
-		baAcctList.removeAll(acctToRemove);
+	System.out.println("Bank Account has Not matched");
 	}
-	
-     public static void WalletOperation(){
+		
+	public static void WalletOperation(){
     	 
     	Scanner sc = new Scanner(System.in);	 		
 	 	UserOperations uop = new UserOperations();
