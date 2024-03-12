@@ -68,5 +68,7 @@ public class User extends Object{
 	public String toString() {
 		return this.userId+" : "+this.firstName+" : "+this.lastName+" : "+this.phoneNumber+" : "+this.dateofBirth+" : "+this.address;
 	}
-	
+	public String userToFileRecord() {
+		return this.userId+","+ this.firstName +","+ this.lastName + ","+this.phoneNumber+","+this.dateOfBirth+","+this.address+"\n";
+	}
 }
