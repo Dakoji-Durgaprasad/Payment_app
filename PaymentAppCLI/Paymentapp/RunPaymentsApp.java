@@ -246,7 +246,20 @@ public class RunPaymentsApp {
 		}
 	System.out.println("Bank Account has Not matched");
 	}
-		
+
+	// public static void WalletOperation() {
+	// 	Scanner sc = new Scanner(System.in);
+	// 	Wallet wa = new Wallet();
+	// 	System.out.println("Enter an amount: ");
+	// 	double amount = sc.nextDouble();
+	// 	if(amount<=wa.getWalletAmountLimit()) {
+	// 		wa.setCurrentBalance(amount);
+	// 	}else {
+	// 		System.out.println("Out of the Wallet Limit!!");
+	// 	}
+	// 	System.out.println("Current Wallet Balance: "+wa.getCurrentBalance());
+	// }
+	
 	public static void WalletOperation(){
     	 
     	Scanner sc = new Scanner(System.in);	 		
