@@ -2,8 +2,8 @@
 public class Wallet {
 	
 	private int UserId;
-	
-	private double currentBalance = 0;
+	public double balance =0;
+	private double currentBalance;
 	private double walletAmountLimit =10000;
 	private double deposit;
 	private double withdraw;
