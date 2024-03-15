@@ -8,7 +8,7 @@ public class User extends Object{
 	private long phoneNumber;
 	private String dateofBirth;
 	private  String address;
-    
+ 
 	private  int userId;
 	private String password;
 	
