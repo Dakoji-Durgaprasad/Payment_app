@@ -89,8 +89,7 @@ public class RunPaymentsApp {
 			} else if (op.equalsIgnoreCase("9")) {
 				if (currUserId != -1) {
 					System.out.println("DO TRANSACTION");
-					TransactionOperations transOper = new TransactionOperations();
-					transOper.showTransactionsOptions();
+					showTransactionsOptions();
 				}
 			} else if (op.equalsIgnoreCase("-1")) {
 				System.out.println("Exit");
@@ -308,5 +307,59 @@ public class RunPaymentsApp {
 		}
 
 	}
+	
+	public static void showTransactionsOptions() {
+		UserOperations uop = new UserOperations();
+
+		while (true) {
+			System.out.println("1. Wallet to Wallet");
+			System.out.println("2. Bank to Wallet");
+			System.out.println("3. Bank to Bank");
+			System.out.println("4. Transaction Statement");
+			System.out.println("5. Back");
+
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Enter an Option: ");
+			int opt = sc.nextInt();
+
+			switch (opt) {
+			case 1:
+				System.out.println("Wallet to Wallet");
+				Scanner scan = new Scanner(System.in);
+				System.out.println("Enter UserID To Send Money: ");
+				String uId = scan.next();
+				for(User u : userList) {
+					
+				}
+				uop.sendMoneyWalletToWallet();
+				break;
+
+			case 2:
+				System.out.println("bank to wallet");
+				uop.sendMoneyBankToWallet();
+				break;
+
+			case 3:
+				System.out.println("bank to bank");
+				uop.sendMoneyBankToBank();
+				break;
+
+			case 4:
+				System.out.println("transaction statement");
+				break;
+			case 5:
+				System.out.println("Thanks You!! \n");
+				break;
+
+			default:
+				System.out.println("Enter valid Option!!");
+			}
+			if (opt == 5) {
+				break;
+			}
+		}
+	}
+
+	
 
 }
