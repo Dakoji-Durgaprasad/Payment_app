@@ -1,3 +1,4 @@
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +95,17 @@ public class UserOperations {
 		return walletList.get(RunPaymentsApp.currUserId).getBalance();
 	}
 
+	public boolean transaction(Wallet sender, Wallet receiver, TxnType type, double amount) {
+		if(walletList.get(RunPaymentsApp.currUserId).getBalance()>=amount) {
+			walletList.get(RunPaymentsApp.currUserId)
+			.setBalance(walletList.get(RunPaymentsApp.currUserId).getBalance() + amount);
+			walletList.get(RunPaymentsApp.currUserId)
+			.setBalance(walletList.get(RunPaymentsApp.currUserId).getBalance() - amount);
+			return true;
+		}
+		return false;
+	}
+	
 	public static void sendMoneyWalletToWallet() {
 		
 		
