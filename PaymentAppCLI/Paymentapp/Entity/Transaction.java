@@ -1,25 +1,30 @@
+import java.time.LocalDate;
 
 public class Transaction {
 
-	private int txnId;
-	private String dateTime;
+	private String txnId;
+	private LocalDate dateTime;
 	private String Limit;
-	private String txnSource;
-	private String txnDestination;
-	private double amount;
+	private TxnType txnSource;
+	private TxnType txnDestination;
+	private TxnType transactionType;
+	private double txnAmount;
 	private String statement;
 	
+	private int userId;
 	
-	public int getTxnId() {
+	Wallet srcWallet;
+	Wallet destWallet;
+	public String getTxnId() {
 		return txnId;
 	}
-	public void setTxnId(int txnId) {
+	public void setTxnId(String txnId) {
 		this.txnId = txnId;
 	}
-	public String getDateTime() {
+	public LocalDate getDateTime() {
 		return dateTime;
 	}
-	public void setDateTime(String dateTime) {
+	public void setDateTime(LocalDate dateTime) {
 		this.dateTime = dateTime;
 	}
 	public String getLimit() {
@@ -28,23 +33,29 @@ public class Transaction {
 	public void setLimit(String limit) {
 		Limit = limit;
 	}
-	public String getTxnSource() {
+	public TxnType getTxnSource() {
 		return txnSource;
 	}
-	public void setTxnSource(String txnSource) {
+	public void setTxnSource(TxnType txnSource) {
 		this.txnSource = txnSource;
 	}
-	public String getTxnDestination() {
+	public TxnType getTxnDestination() {
 		return txnDestination;
 	}
-	public void setTxnDestination(String txnDestination) {
+	public void setTxnDestination(TxnType txnDestination) {
 		this.txnDestination = txnDestination;
 	}
-	public double getAmount() {
-		return amount;
+	public TxnType getTransactionType() {
+		return transactionType;
 	}
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setTransactionType(TxnType transactionType) {
+		this.transactionType = transactionType;
+	}
+	public double getTxnAmount() {
+		return txnAmount;
+	}
+	public void setTxnAmount(double txnAmount) {
+		this.txnAmount = txnAmount;
 	}
 	public String getStatement() {
 		return statement;
@@ -52,6 +63,35 @@ public class Transaction {
 	public void setStatement(String statement) {
 		this.statement = statement;
 	}
-	
-	
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	public Wallet getSrcWallet() {
+		return srcWallet;
+	}
+	public void setSrcWallet(Wallet srcWallet) {
+		this.srcWallet = srcWallet;
+	}
+	public Wallet getDestWallet() {
+		return destWallet;
+	}
+	public void setDestWallet(Wallet destWallet) {
+		this.destWallet = destWallet;
+	}
+
+	public String toString(){
+		
+		return "---" +": Transaction ID: " + txnId + " Date: " + dateTime 
+				+ " Amount: "+txnAmount + " Source Type: " + txnSource
+				+" Amount sent to UserId: "+ userId + " Destination Type: "
+				+ txnDestination ;
+	}
 }
+
+
+
+
+
