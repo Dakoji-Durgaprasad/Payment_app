@@ -1,4 +1,5 @@
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,28 +96,58 @@ public class UserOperations {
 		return walletList.get(RunPaymentsApp.currUserId).getBalance();
 	}
 
-	public boolean transaction(Wallet sender, Wallet receiver, TxnType type, double amount) {
-		if(walletList.get(RunPaymentsApp.currUserId).getBalance()>=amount) {
-			walletList.get(RunPaymentsApp.currUserId)
-			.setBalance(walletList.get(RunPaymentsApp.currUserId).getBalance() + amount);
-			walletList.get(RunPaymentsApp.currUserId)
-			.setBalance(walletList.get(RunPaymentsApp.currUserId).getBalance() - amount);
+//	public boolean transaction(Wallet sender, Wallet receiver, TxnType type, double amount) {
+//		if(walletList.get(RunPaymentsApp.currUserId).getBalance()>=amount) {
+//			walletList.get(RunPaymentsApp.currUserId)
+//			.setBalance(walletList.get(RunPaymentsApp.currUserId).getBalance() + amount);
+//			walletList.get(RunPaymentsApp.currUserId)
+//			.setBalance(walletList.get(RunPaymentsApp.currUserId).getBalance() - amount);
+//			return true;
+//		}
+//		return false;
+//	}
+	public boolean transaction(Wallet sender , Wallet receiver , TxnType type,double amount) {
+		if(sender.getBalance()>amount) {
+			receiver.setBalance(receiver.getBalance()+amount);
+			sender.setBalance(sender.getBalance()-amount);
 			return true;
 		}
 		return false;
-	}
-	
-	public static void sendMoneyWalletToWallet() {
-		
-		
-	}
 
-	public static void sendMoneyBankToWallet() {
 
 	}
+	public boolean transaction(BankAccount sender , BankAccount receiver , TxnType tType,double amount) {
+		if(sender.getBankBalance()>amount) {
+			receiver.setBankBalance(receiver.getBankBalance()+amount);
+			sender.setBankBalance(sender.getBankBalance()-amount);
+			return true;
+		}
+		return false;
 
-	public static void sendMoneyBankToBank() {
 
 	}
+	public boolean transaction(BankAccount sender , Wallet receiver , TxnType type,double amount) {
+		if(sender.getBankBalance()>amount) {
+			receiver.setBalance(receiver.getBalance()+amount);
+			sender.setBankBalance(sender.getBankBalance()-amount);
+			return true;
+		}
+		return false;
 
+
+	}
+	public boolean transaction(Wallet sender , BankAccount receiver , TxnType type,double amount) {
+		if(sender.getBalance()>amount) {
+			receiver.setBankBalance(receiver.getBankBalance()+amount);
+			sender.setBalance(sender.getBalance()-amount);
+			return true;
+		}
+		return false;
+
+
+	}
+	public  void creditAmountToAccount(BankAccount bankAccount,double amount) {
+		bankAccount.setBankBalance(bankAccount.getBankBalance()+amount);
+		System.out.println("money added to your account");
+	}
 }
