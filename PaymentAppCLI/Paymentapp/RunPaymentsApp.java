@@ -1,5 +1,7 @@
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +92,7 @@ public class RunPaymentsApp {
 			} else if (op.equalsIgnoreCase("9")) {
 				if (currUserId != -1) {
 					System.out.println("DO TRANSACTION");
-					showTransactionsOptions();
+					transactionOperation();
 				}
 			} else if (op.equalsIgnoreCase("-1")) {
 				System.out.println("Exit");
@@ -308,58 +310,173 @@ public class RunPaymentsApp {
 		}
 
 	}
-	
-	public static void showTransactionsOptions() {
-		UserOperations uop = new UserOperations();
 
-		while (true) {
-			System.out.println("1. Wallet to Wallet");
-			System.out.println("2. Bank to Wallet");
-			System.out.println("3. Bank to Bank");
-			System.out.println("4. Transaction Statement");
-			System.out.println("5. Back");
-
+	public static void transactionOperation() {
+		if (currUserId != -1) {
 			Scanner sc = new Scanner(System.in);
-			System.out.println("Enter an Option: ");
-			int opt = sc.nextInt();
-
-			switch (opt) {
-			case 1:
-				System.out.println("Wallet to Wallet");
-				Scanner scan = new Scanner(System.in);
-				System.out.println("Enter UserID To Send Money: ");
-				String uId = scan.next();
-				for(User u : userList) {
-					
-				}
-				uop.sendMoneyWalletToWallet();
-				break;
-
-			case 2:
-				System.out.println("bank to wallet");
-				uop.sendMoneyBankToWallet();
-				break;
-
-			case 3:
-				System.out.println("bank to bank");
-				uop.sendMoneyBankToBank();
-				break;
-
-			case 4:
-				System.out.println("transaction statement");
-				break;
-			case 5:
-				System.out.println("Thanks You!! \n");
-				break;
-
-			default:
-				System.out.println("Enter valid Option!!");
+			Transaction transaction = new Transaction();
+			Date date = new Date();
+			UserOperations ops = new UserOperations();
+			int i = 1;
+			for (TxnType transactionType : TxnType.values()) {
+				System.out.println(i + " " + transactionType);
+				i++;
 			}
-			if (opt == 5) {
-				break;
+			System.out.println("select an option to perform : ");
+			int option = sc.nextInt();
+			if (option == 1) {
+				transaction.setTransactionType(TxnType.DEBIT);
+				System.out.println("Select which type of transfer you want to perform");
+				System.out.println("1.Wallet to Wallet");
+				System.out.println("2.Bank to Bank");
+				System.out.println("3.Bank to Wallet");
+				System.out.println("4.Wallet to Bank");
+				boolean result;
+
+				int transferType = sc.nextInt();
+				System.out.println("Enter Transaction Amount : ");
+				double tAmount = sc.nextDouble();
+				transaction.setTxnAmount(tAmount);
+				transaction.setTxnDate(date);
+				transaction.setTxnId(date.getTime());
+
+				switch (transferType) {
+				case 1:
+					Wallet source = walletList.get(currUserId);
+					transaction.setSrcWallet(source);
+					System.out.println("enter receiver userId : ");
+					int receiver = sc.nextInt();
+					Wallet destination = walletList.get(receiver);
+					transaction.setDestWallet(destination);
+					result = ops.transaction(source, destination, transaction.getTransactionType(), tAmount);
+					if (result) {
+						System.out.println("Transaction Successful");
+					} else {
+						System.out.println("Transaction Failed");
+					}
+
+					break;
+
+				case 2:
+					System.out.println("Enter sender bankaccount number : ");
+					String senderAcctNum = sc.next();
+					BankAccount source2 = null;
+					List<BankAccount> userAccountList = new ArrayList<BankAccount>();
+					Map<User, List<BankAccount>> mapItems = ops.getUsersBankAccount();
+					for (User u : mapItems.keySet()) {
+						if (u.getUserId() == currUserId) {
+							userAccountList = mapItems.get(u);
+						}
+					}
+					for (BankAccount b : userAccountList) {
+						if (b.getBankAcctNumber().equals(senderAcctNum)) {
+							source2 = b;
+						}
+					}
+					if (source2 != null) {
+						System.out.println("Enter receiver bankaccount number : ");
+						String recieverAcctNum = sc.next();
+						BankAccount destination2 = null;
+						for (BankAccount b : baAcctList) {
+							if (b.getBankAcctNumber().equals(recieverAcctNum)) {
+								destination2 = b;
+							}
+						}
+
+						transaction.setTxnSource(source2);
+						transaction.setTxnDestination(destination2);
+						result = ops.transaction(source2, destination2, transaction.getTransactionType(), tAmount);
+						if (result) {
+							System.out.println("transaction successful");
+						} else {
+							System.out.println("Transaction failed");
+						}
+					}
+					break;
+				case 3:
+					System.out.println("Enter sender bankaccount number : ");
+					String senderAcctNumBankToWallet = sc.next();
+					BankAccount sourceBankToWallet = null;
+
+					List<BankAccount> userAccountListBankToWallet = new ArrayList<BankAccount>();
+					Map<User, List<BankAccount>> mapItemsBankToWallet = ops.getUsersBankAccount();
+					for (User u : mapItemsBankToWallet.keySet()) {
+						if (u.getUserId() == currUserId) {
+							userAccountListBankToWallet = mapItemsBankToWallet.get(u);
+						}
+					}
+					for (BankAccount b : userAccountListBankToWallet) {
+						if (b.getBankAcctNumber().equals(senderAcctNumBankToWallet)) {
+							sourceBankToWallet = b;
+							transaction.setTxnSource(sourceBankToWallet);
+						}
+					}
+
+					System.out.println("enter receiver userId : ");
+					int receiverId = sc.nextInt();
+					Wallet destinationWallet = walletList.get(receiverId);
+					transaction.setDestWallet(destinationWallet);
+					result = ops.transaction(sourceBankToWallet, destinationWallet, transaction.getTransactionType(),
+							tAmount);
+					if (result) {
+						System.out.println("transaction successful");
+					} else {
+						System.out.println("Transaction failed");
+					}
+					break;
+				case 4:
+					Wallet sourceWallet = walletList.get(currUserId);
+					transaction.setSrcWallet(sourceWallet);
+
+					System.out.println("Enter receiver bankaccount number : ");
+					String recieverAcctNum = sc.next();
+					BankAccount destinationAccount = null;
+					for (BankAccount b : baAcctList) {
+						if (b.getBankAcctNumber().equals(recieverAcctNum)) {
+							destinationAccount = b;
+						}
+
+					}
+					transaction.setTxnDestination(destinationAccount);
+					result = ops.transaction(sourceWallet, destinationAccount, transaction.getTransactionType(),
+							tAmount);
+					if (result) {
+						System.out.println("transaction successful");
+					} else {
+						System.out.println("Transaction failed");
+					}
+					break;
+
+				default:
+					System.out.println("please enter correct option");
+				}
+
+			}
+
+			else if (option == 2) {
+				transaction.setTransactionType(TxnType.CREDIT);
+				transaction.setTxnDate(date);
+				transaction.setTxnId(date.getTime());
+				System.out.println("Enter Account Number : ");
+				String targetAcctNum = sc.next();
+				System.out.println("Enter Transaction Amount : ");
+				double tAmount = sc.nextDouble();
+				BankAccount source = null;
+				List<BankAccount> userAccountList = new ArrayList<BankAccount>();
+				Map<User, List<BankAccount>> mapItems = ops.getUsersBankAccount();
+				for (User u : mapItems.keySet()) {
+					if (u.getUserId() == currUserId) {
+						userAccountList = mapItems.get(u);
+					}
+				}
+				for (BankAccount b : userAccountList) {
+					if (b.getBankAcctNumber().equals(targetAcctNum)) {
+						source = b;
+					}
+				}
+				transaction.setTxnSource(source);
+				ops.creditAmountToAccount(source, tAmount);
 			}
 		}
 	}
-
-
 }
